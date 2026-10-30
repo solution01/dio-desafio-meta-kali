@@ -6,7 +6,7 @@ Aviso Legal: Este laboratório foi desenvolvido estritamente para fins educacion
 # 1. Objetivo do Laboratório
 Demonstrar o funcionamento de um ataque de Força Bruta automatizado contra um serviço de rede (SSH) utilizando a ferramenta Medusa, evidenciando os riscos de credenciais fracas ou padrão e a importância de políticas de senhas fortes.
 
-#2. Arquitetura e Requisitos do Ambiente
+# 2. Arquitetura e Requisitos do Ambiente
 Para montar este laboratório, foi necessário utilizar as seguintes ferramentas:
 •	Máquina Atacante: Kali Linux
 •	Máquina Alvo: Metasploitable 2 (Máquina virtual intencionalmente vulnerável)
@@ -14,8 +14,8 @@ Para montar este laboratório, foi necessário utilizar as seguintes ferramentas
 
 # 3. Reconhecimento (Fase de Reconhecimento)
 Antes de iniciar o ataque, precisamos identificar o endereço IP da máquina alvo na rede local e confirmar se o serviço SSH está ativo.
-
-#3.1. Identificando o IP do alvo
+ 
+# 3.1. Identificando o IP do alvo
 Para identificar o IP do alvo, execute o netdiscover ou nmap para encontrar o Metasploitable 2 na rede:
 
 `Bash
